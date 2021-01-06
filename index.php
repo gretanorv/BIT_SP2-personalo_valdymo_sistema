@@ -9,7 +9,14 @@
 </head>
 
 <body>
-    <header class="header">Headeris</header>
+    <header class="header">
+        <div class="header_btn">
+            <a href="?path=projektai" class="header_btn-name">Projektai</a>
+        </div>
+        <div class="header_btn">
+            <a href="?path=darbuotojai" class="header_btn-name">Darbuotojai</a>
+        </div>
+    </header>
     <main class="main">
 
         <?php
@@ -18,7 +25,7 @@
         $username = 'root';
         $password = 'mysql';
 
-        //TODO:: instructions for db initiation
+        //TODO:: instructions for db initiation:: WATCH 
         //create connection
         // $conn = mysqli_connect($server_name, $username, $password);
         // if (!$conn) (die("Connection failed: " . mysqli_connect_error()));
@@ -31,10 +38,29 @@
         //     echo "Error creating database: " . mysqli_error($conn);
         // }
 
-
         $db_name = 'personalo_valdymo_sistema';
         $conn = mysqli_connect($server_name, $username, $password, $db_name);
-        if (!$conn) die('Connection failed: ' . mysqli_connect_error());
+        if (!$conn) {
+            die('Connection failed: ' . mysqli_connect_error());
+        } else {
+            //magic starts here
+            $sql = 'SELECT projektai.id AS id, projekto_pavadinimas,  CONCAT_WS(" ", vardas, pavarde) AS vardas FROM projektai
+            LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id';
+        }
+
+        if ($_GET['path'] == 'darbuotojai') {
+            print('Darbuotoju lentele cia:');
+            $sql = 'SELECT darbuotojai.id, concat_ws(" ", vardas, pavarde) AS vardas, projekto_pavadinimas FROM darbuotojai
+            LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
+        } else if ($_GET['path'] == 'projektai') {
+            print('Projektu lentele cia:');
+            $sql = 'SELECT projektai.id, projekto_pavadinimas, group_concat(vardas) AS vardas FROM projektai
+            LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id
+            GROUP BY projektai.id';
+        }
+
+        print_table($conn, $sql);
+
 
         // //create tables
         // $sql = 'CREATE TABLE projektai (
@@ -75,28 +101,27 @@
 
 
         //projektai ir darbuotojai
-        $sql = 'SELECT projektai.id AS id, projekto_pavadinimas, vardas, pavarde FROM projektai
-        LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id';
-        $res = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            print('<div style="display:flex; flex-direction:column; width:400px">');
-            print('<div style="display:flex">
+        function print_table($conn, $sql)
+        {
+            $res = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                print('<div style="display:flex; flex-direction:column; width:400px">');
+                print('<div style="display:flex">
                 <div style="flex:1">Id:</div>
                 <div style="flex:2">Projektas:</div>
                 <div style="flex:2">Vardas:</div>
-                <div style="flex:2">Pavarde:</div>
             </div>');
-            while ($row = mysqli_fetch_assoc($res)) {
-                print("
+                while ($row = mysqli_fetch_assoc($res)) {
+                    print("
                 <div style='display:flex'>
                     <div style='flex:1'>{$row['id']}</div>
                     <div style='flex:2'>{$row['projekto_pavadinimas']}</div>
                     <div style='flex:2'>{$row['vardas']}</div>
-                    <div style='flex:2'>{$row['pavarde']}</div>
                 </div>
             ");
+                }
+                print('</div>');
             }
-            print('</div>');
         }
 
         ?>
