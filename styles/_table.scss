@@ -3,7 +3,7 @@
   border-radius: 5px;
   box-sizing: border-box;
   font-weight: 300;
-  padding: 20px;
+  padding: 20px 20px 0;
 
   &__row {
     display: flex;
@@ -20,23 +20,45 @@
   }
 
   &__col {
+    margin-right: 20px;
+    min-width: 20%;
+
     &-id {
       text-align: center;
-      width: 40px;
-      margin-right: 20px;
-
-      &--head {
-        font-weight: 400;
-      }
+      width: 5%;
     }
 
     &-text {
-      min-width: 150px;
       margin-right: 20px;
+      width: 60%;
+    }
 
-      &--head {
-        font-weight: 400;
+    &-controls {
+      width: 15%;
+
+      &-link {
+        text-decoration: none;
+        color: #32594f;
+        border: 1px solid #32594f;
+        padding: 0 3px;
+        border-radius: 3px;
+        transition: all 0.3s ease-out;
+        letter-spacing: 1px;
+
+        &:hover {
+          background-color: #32594f;
+          color: #fff;
+        }
+
+        &--del:hover {
+          background-color: #ff747d;
+          border-color: #ff747d;
+        }
       }
+    }
+
+    &--head {
+      font-weight: 400;
     }
   }
 }
