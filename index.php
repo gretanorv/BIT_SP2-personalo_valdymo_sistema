@@ -67,7 +67,7 @@
                 $stmt->close();
                 mysqli_close($conn);
 
-                header("Location: " . strtok($_SERVER['REQUEST_URI'], '?'));
+                header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
                 die();
             }
         }
@@ -150,17 +150,23 @@
                             <div class='table__col-id'><?php echo $row['id'] ?></div>
                             <?php $_GET['path'] == 'projektai' ?
                                 print("<div class='table__col'>{$row['projekto_pavadinimas']}</div>
-                            <div class='table__col-text'>{$row['vardas']}</div>
-                            ")
+                                <div class='table__col-text'>{$row['vardas']}</div>
+                                ")
                                 :
                                 print("<div class='table__col'>{$row['vardas']}</div>
                                 <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
                                 ");
 
+                            if (isset($_GET['path'])) {
+                                $path = "path={$_GET['path']}";
+                            } else {
+                                $path = "";
+                            }
+
                             print("<div class='table__col-controls'>
                             <a href='?action=edit' class='table__col-controls-link'>EDIT</a>
-                            <a href='?path={$_GET['path']}&action=delete&id={$row['id']}' class='table__col-controls-link'>DELETE</a>
-                        </div>");
+                            <a href='?{$path}&action=delete&id={$row['id']}' class='table__col-controls-link'>DELETE</a>
+                            </div>");
                             ?>
                         </div>
             <?php
