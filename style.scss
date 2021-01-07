@@ -1,1 +1,10 @@
+@import "./styles/header";
+@import "./styles/footer";
+@import "./styles/main";
+@import "./styles/table";
 
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+}

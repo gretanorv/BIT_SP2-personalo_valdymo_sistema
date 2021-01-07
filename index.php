@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Personalo valdymo sistema</title>
 </head>
 
 <body>
     <header class="header">
-        <div class="header_btn">
-            <a href="?path=projektai" class="header_btn-name">Projektai</a>
+        <div class="header__btn header__btn--left-radius">
+            <a href="?path=projektai" class="header__btn-name">Projektai</a>
         </div>
-        <div class="header_btn">
-            <a href="?path=darbuotojai" class="header_btn-name">Darbuotojai</a>
+        <div class="header__btn">
+            <a href="?path=darbuotojai" class="header__btn-name">Darbuotojai</a>
         </div>
     </header>
     <main class="main">
@@ -49,11 +51,11 @@
         }
 
         if ($_GET['path'] == 'darbuotojai') {
-            print('Darbuotoju lentele cia:');
+            print('<h2 class="main__title">DARBUOTOJAI</h2>');
             $sql = 'SELECT darbuotojai.id, concat_ws(" ", vardas, pavarde) AS vardas, projekto_pavadinimas FROM darbuotojai
             LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
         } else if ($_GET['path'] == 'projektai') {
-            print('Projektu lentele cia:');
+            print('<h2 class="main__title">PROJEKTAI</h2>');
             $sql = 'SELECT projektai.id, projekto_pavadinimas, group_concat(vardas) AS vardas FROM projektai
             LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id
             GROUP BY projektai.id';
@@ -105,18 +107,18 @@
         {
             $res = mysqli_query($conn, $sql);
             if (mysqli_num_rows($res) > 0) {
-                print('<div style="display:flex; flex-direction:column; width:400px">');
-                print('<div style="display:flex">
-                <div style="flex:1">Id:</div>
-                <div style="flex:2">Projektas:</div>
-                <div style="flex:2">Vardas:</div>
+                print('<div class="table">');
+                print('<div class="table__row table__row--head">
+                <div class="table__col-id table__col-id--head">ID</div>
+                <div class="table__col-text table__col-text--head">PROJEKTAS</div>
+                <div class="table__col-text table__col-text--head">VARDAS</div>
             </div>');
                 while ($row = mysqli_fetch_assoc($res)) {
                     print("
-                <div style='display:flex'>
-                    <div style='flex:1'>{$row['id']}</div>
-                    <div style='flex:2'>{$row['projekto_pavadinimas']}</div>
-                    <div style='flex:2'>{$row['vardas']}</div>
+                <div class='table__row'>
+                    <div class='table__col-id'>{$row['id']}</div>
+                    <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
+                    <div class='table__col-text'>{$row['vardas']}</div>
                 </div>
             ");
                 }
@@ -127,7 +129,9 @@
         ?>
 
     </main>
-    <footer class="footer">Footeris</footer>
+    <footer class="footer">
+        <p class="footer__text">Footeris</p>
+    </footer>
 </body>
 
 </html>
