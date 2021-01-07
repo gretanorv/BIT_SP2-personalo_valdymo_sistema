@@ -46,21 +46,23 @@
             die('Connection failed: ' . mysqli_connect_error());
         } else {
             //magic starts here
+            $title = 'DARBUOTOJAI';
             $sql = 'SELECT projektai.id AS id, projekto_pavadinimas,  CONCAT_WS(" ", vardas, pavarde) AS vardas FROM projektai
             LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id';
         }
 
         if ($_GET['path'] == 'darbuotojai') {
-            print('<h2 class="main__title">DARBUOTOJAI</h2>');
+            $title = 'DARBUOTOJAI';
             $sql = 'SELECT darbuotojai.id, concat_ws(" ", vardas, pavarde) AS vardas, projekto_pavadinimas FROM darbuotojai
             LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
         } else if ($_GET['path'] == 'projektai') {
-            print('<h2 class="main__title">PROJEKTAI</h2>');
+            $title = 'PROJEKTAI';
             $sql = 'SELECT projektai.id, projekto_pavadinimas, group_concat(vardas) AS vardas FROM projektai
             LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id
             GROUP BY projektai.id';
         }
 
+        print("<h2 class='main__title'>{$title}</h2>");
         print_table($conn, $sql);
 
 
