@@ -1,0 +1,31 @@
+.header {
+  align-items: center;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  justify-content: flex-start;
+  display: flex;
+  background-color: #fdd5b0;
+  margin-bottom: 40px;
+
+  &__btn {
+    cursor: pointer;
+    padding: 20px 0;
+
+    &-name {
+      color: #32594f;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 400;
+      padding: 20px 20px;
+    }
+
+    &--left-radius:hover {
+      border-bottom-left-radius: 25px;
+    }
+
+    &:hover {
+      background-color: darken($color: #fdd5b0, $amount: 10%);
+      transition: background-color 0.3s ease-out;
+    }
+  }
+}

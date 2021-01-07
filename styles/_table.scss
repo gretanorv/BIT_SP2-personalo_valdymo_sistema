@@ -1,0 +1,42 @@
+.table {
+  border: 1px solid #d6d6d6;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-weight: 300;
+  padding: 20px;
+
+  &__row {
+    display: flex;
+    padding-left: 10px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid lighten($color: #32594f, $amount: 60%);
+    margin-bottom: 5px;
+
+    &--head {
+      border-bottom: 1.5px solid #32594f;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  &__col {
+    &-id {
+      text-align: center;
+      width: 40px;
+      margin-right: 20px;
+
+      &--head {
+        font-weight: 400;
+      }
+    }
+
+    &-text {
+      min-width: 150px;
+      margin-right: 20px;
+
+      &--head {
+        font-weight: 400;
+      }
+    }
+  }
+}
