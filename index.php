@@ -42,6 +42,7 @@
 
         $db_name = 'personalo_valdymo_sistema';
         $conn = mysqli_connect($server_name, $username, $password, $db_name);
+
         if (!$conn) {
             die('Connection failed: ' . mysqli_connect_error());
         } else {
@@ -57,7 +58,7 @@
             LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
         } else if ($_GET['path'] == 'projektai') {
             $title = 'PROJEKTAI';
-            $sql = 'SELECT projektai.id, projekto_pavadinimas, group_concat(vardas) AS vardas FROM projektai
+            $sql = 'SELECT projektai.id, projekto_pavadinimas, group_concat(CONCAT_WS(" ", vardas, pavarde) SEPARATOR "; " ) AS vardas FROM projektai
             LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id
             GROUP BY projektai.id';
         }
@@ -113,7 +114,7 @@
                 print('<div class="table__row table__row--head">
                 <div class="table__col-id table__col-id--head">ID</div>
                 <div class="table__col-text table__col-text--head">PROJEKTAS</div>
-                <div class="table__col-text table__col-text--head">VARDAS</div>
+                <div class="table__col-text table__col-text--head">VARDAS, PAVARDĖ</div>
             </div>');
                 while ($row = mysqli_fetch_assoc($res)) {
                     print("
