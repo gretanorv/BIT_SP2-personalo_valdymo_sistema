@@ -55,6 +55,7 @@
             if (isset($_GET['action']) and $_GET['action'] == 'delete') {
                 print($_GET['path']);
                 if ($_GET['path'] == 'projektai') {
+                    //TODO:: if employees left throw error/ warning
                     $sql = "DELETE FROM projektai WHERE ID = ?";
                 } else {
                     $sql = "DELETE FROM darbuotojai WHERE ID = ?";
@@ -164,8 +165,9 @@
                             }
 
                             print("<div class='table__col-controls'>
-                            <a href='?action=edit' class='table__col-controls-link'>EDIT</a>
-                            <a href='?{$path}&action=delete&id={$row['id']}' class='table__col-controls-link'>DELETE</a>
+                            <a href='?{$path}&action=edit' class='table__col-controls-link'>EDIT</a>
+                            <a href='?{$path}&action=delete&id={$row['id']}' 
+                            class='table__col-controls-link table__col-controls-link--del'>DELETE</a>
                             </div>");
                             ?>
                         </div>
@@ -184,5 +186,6 @@
         <p class="footer__text">Footeris</p>
     </footer>
 </body>
+<script src=""></script>
 
 </html>

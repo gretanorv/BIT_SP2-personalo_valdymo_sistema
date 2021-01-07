@@ -84,7 +84,7 @@
 
 .table__col {
   margin-right: 20px;
-  min-width: 15%;
+  min-width: 20%;
 }
 
 .table__col-id {
@@ -99,6 +99,27 @@
 
 .table__col-controls {
   width: 15%;
+}
+
+.table__col-controls-link {
+  text-decoration: none;
+  color: #32594f;
+  border: 1px solid #32594f;
+  padding: 0 3px;
+  border-radius: 3px;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  letter-spacing: 1px;
+}
+
+.table__col-controls-link:hover {
+  background-color: #32594f;
+  color: #fff;
+}
+
+.table__col-controls-link--del:hover {
+  background-color: #ff747d;
+  border-color: #ff747d;
 }
 
 .table__col--head {
