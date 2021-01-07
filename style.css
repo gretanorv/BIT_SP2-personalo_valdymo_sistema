@@ -93,12 +93,13 @@
 }
 
 .table__col-text {
-  min-width: 150px;
+  min-width: 200px;
   margin-right: 20px;
 }
 
 .table__col-text--head {
   font-weight: 400;
+  text-transform: uppercase;
 }
 
 body {

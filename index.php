@@ -48,7 +48,7 @@
         } else {
             //magic starts here
             $title = 'DARBUOTOJAI';
-            $sql = 'SELECT projektai.id AS id, projekto_pavadinimas,  CONCAT_WS(" ", vardas, pavarde) AS vardas FROM projektai
+            $sql = 'SELECT darbuotojai.id AS id, projekto_pavadinimas,  CONCAT_WS(" ", vardas, pavarde) AS vardas FROM projektai
             LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id';
         }
 
@@ -110,26 +110,40 @@
         {
             $res = mysqli_query($conn, $sql);
             if (mysqli_num_rows($res) > 0) {
-                print('<div class="table">');
-                print('<div class="table__row table__row--head">
-                <div class="table__col-id table__col-id--head">ID</div>
-                <div class="table__col-text table__col-text--head">PROJEKTAS</div>
-                <div class="table__col-text table__col-text--head">VARDAS, PAVARDĖ</div>
-            </div>');
-                while ($row = mysqli_fetch_assoc($res)) {
-                    print("
-                <div class='table__row'>
-                    <div class='table__col-id'>{$row['id']}</div>
-                    <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
-                    <div class='table__col-text'>{$row['vardas']}</div>
-                </div>
-            ");
-                }
-                print('</div>');
-            }
-        }
-
         ?>
+                <div class="table">
+                    <div class="table__row table__row--head">
+                        <div class="table__col-id table__col-id--head">ID</div>
+                        <?php $_GET['path'] == 'projektai' ?
+                            print("<div class='table__col-text table__col-text--head'>PROJEKTAS</div>
+                            <div class='table__col-text table__col-text--head'>DARBUOTOJAI</div>
+                            ")
+                            :
+                            print("<div class='table__col-text table__col-text--head'>DARBUOTOJAS</div>
+                            <div class='table__col-text table__col-text--head'>PROJEKTAS</div>
+                            ")
+                        ?>
+                    </div>
+                    <?php while ($row = mysqli_fetch_assoc($res)) { ?>
+                        <div class='table__row'>
+                            <div class='table__col-id'><?php echo $row['id'] ?></div>
+                            <?php $_GET['path'] == 'projektai' ?
+                                print("<div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
+                            <div class='table__col-text'>{$row['vardas']}</div>
+                            ")
+                                :
+                                print("<div class='table__col-text'>{$row['vardas']}</div>
+                                <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
+                                ")
+                            ?>
+                        </div>
+            <?php
+                    }
+                    print('</div>');
+                }
+            }
+
+            ?>
 
     </main>
     <footer class="footer">

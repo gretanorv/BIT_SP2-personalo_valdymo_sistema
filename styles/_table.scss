@@ -31,11 +31,12 @@
     }
 
     &-text {
-      min-width: 150px;
+      min-width: 200px;
       margin-right: 20px;
 
       &--head {
         font-weight: 400;
+        text-transform: uppercase;
       }
     }
   }
