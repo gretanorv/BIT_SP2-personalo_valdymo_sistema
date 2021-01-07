@@ -82,24 +82,27 @@
   margin-bottom: 5px;
 }
 
-.table__col-id {
-  text-align: center;
-  width: 40px;
+.table__col {
   margin-right: 20px;
+  min-width: 15%;
 }
 
-.table__col-id--head {
-  font-weight: 400;
+.table__col-id {
+  text-align: center;
+  width: 5%;
 }
 
 .table__col-text {
-  min-width: 200px;
   margin-right: 20px;
+  width: 60%;
 }
 
-.table__col-text--head {
+.table__col-controls {
+  width: 15%;
+}
+
+.table__col--head {
   font-weight: 400;
-  text-transform: uppercase;
 }
 
 body {

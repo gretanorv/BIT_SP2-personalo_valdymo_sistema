@@ -20,24 +20,25 @@
   }
 
   &__col {
+    margin-right: 20px;
+    min-width: 15%;
+
     &-id {
       text-align: center;
-      width: 40px;
-      margin-right: 20px;
-
-      &--head {
-        font-weight: 400;
-      }
+      width: 5%;
     }
 
     &-text {
-      min-width: 200px;
       margin-right: 20px;
+      width: 60%;
+    }
 
-      &--head {
-        font-weight: 400;
-        text-transform: uppercase;
-      }
+    &-controls {
+      width: 15%;
+    }
+
+    &--head {
+      font-weight: 400;
     }
   }
 }

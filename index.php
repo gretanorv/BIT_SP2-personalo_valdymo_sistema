@@ -133,33 +133,33 @@
         ?>
                 <div class="table">
                     <div class="table__row table__row--head">
-                        <div class="table__col-id table__col-id--head">ID</div>
+                        <div class="table__col-id table__col--head">ID</div>
                         <?php $_GET['path'] == 'projektai' ?
-                            print("<div class='table__col-text table__col-text--head'>PROJEKTAS</div>
-                            <div class='table__col-text table__col-text--head'>DARBUOTOJAI</div>
+                            print("<div class='table__col table__col--head'>PROJEKTAS</div>
+                            <div class='table__col-text table__col--head'>DARBUOTOJAI</div>
                             ")
                             :
-                            print("<div class='table__col-text table__col-text--head'>DARBUOTOJAS</div>
-                            <div class='table__col-text table__col-text--head'>PROJEKTAS</div>
+                            print("<div class='table__col table__col--head'>DARBUOTOJAS</div>
+                            <div class='table__col-text table__col--head'>PROJEKTAS</div>
                             ")
                         ?>
-                        <div class="table__col-text table__col-text--head">VEIKSMAI</div>
+                        <div class="table__col-controls table__col--head">VEIKSMAI</div>
                     </div>
                     <?php while ($row = mysqli_fetch_assoc($res)) { ?>
                         <div class='table__row'>
                             <div class='table__col-id'><?php echo $row['id'] ?></div>
                             <?php $_GET['path'] == 'projektai' ?
-                                print("<div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
+                                print("<div class='table__col'>{$row['projekto_pavadinimas']}</div>
                             <div class='table__col-text'>{$row['vardas']}</div>
                             ")
                                 :
-                                print("<div class='table__col-text'>{$row['vardas']}</div>
+                                print("<div class='table__col'>{$row['vardas']}</div>
                                 <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
                                 ");
 
-                            print("<div class='table__col'>
-                            <a href='?action=edit' class='table__col-controls'>EDIT</a>
-                            <a href='?path={$_GET['path']}&action=delete&id={$row['id']}' class='table__col-controls'>DELETE</a>
+                            print("<div class='table__col-controls'>
+                            <a href='?action=edit' class='table__col-controls-link'>EDIT</a>
+                            <a href='?path={$_GET['path']}&action=delete&id={$row['id']}' class='table__col-controls-link'>DELETE</a>
                         </div>");
                             ?>
                         </div>
