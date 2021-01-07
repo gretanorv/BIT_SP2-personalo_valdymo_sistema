@@ -48,8 +48,28 @@
         } else {
             //magic starts here
             $title = 'DARBUOTOJAI';
-            $sql = 'SELECT darbuotojai.id AS id, projekto_pavadinimas,  CONCAT_WS(" ", vardas, pavarde) AS vardas FROM projektai
-            LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id';
+            $sql = 'SELECT darbuotojai.id, concat_ws(" ", vardas, pavarde) AS vardas, projekto_pavadinimas FROM darbuotojai
+            LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
+
+            //delete magic
+            if (isset($_GET['action']) and $_GET['action'] == 'delete') {
+                print($_GET['path']);
+                if ($_GET['path'] == 'projektai') {
+                    $sql = "DELETE FROM projektai WHERE ID = ?";
+                } else {
+                    $sql = "DELETE FROM darbuotojai WHERE ID = ?";
+                }
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('i', $_GET['id']);
+                $res = $stmt->execute();
+
+                $stmt->close();
+                mysqli_close($conn);
+
+                header("Location: " . strtok($_SERVER['REQUEST_URI'], '?'));
+                die();
+            }
         }
 
         if ($_GET['path'] == 'darbuotojai') {
@@ -123,6 +143,7 @@
                             <div class='table__col-text table__col-text--head'>PROJEKTAS</div>
                             ")
                         ?>
+                        <div class="table__col-text table__col-text--head">VEIKSMAI</div>
                     </div>
                     <?php while ($row = mysqli_fetch_assoc($res)) { ?>
                         <div class='table__row'>
@@ -134,12 +155,19 @@
                                 :
                                 print("<div class='table__col-text'>{$row['vardas']}</div>
                                 <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
-                                ")
+                                ");
+
+                            print("<div class='table__col'>
+                            <a href='?action=edit' class='table__col-controls'>EDIT</a>
+                            <a href='?path={$_GET['path']}&action=delete&id={$row['id']}' class='table__col-controls'>DELETE</a>
+                        </div>");
                             ?>
                         </div>
             <?php
                     }
                     print('</div>');
+                } else {
+                    print('<p>Nėra duomenų</p>');
                 }
             }
 
