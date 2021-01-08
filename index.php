@@ -68,8 +68,6 @@
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('si', $_POST['projektas'], $_GET['edit']);
                 } else {
-                    $id = get_project_id($conn, $_POST['projects']);
-                    echo $id;
                     $sql = "UPDATE darbuotojai SET
                     vardas = ?,
                     pavarde = ?,
@@ -78,6 +76,7 @@
 
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('ssii', $_POST['vardas'], $_POST['pavarde'], $id, $_GET['edit']);
+                    $id = get_project_id($conn, $_POST['projects']);
                 }
 
                 $res = $stmt->execute();
