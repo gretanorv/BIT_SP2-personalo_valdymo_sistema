@@ -6,17 +6,22 @@
   display: flex;
   background-color: #fdd5b0;
   margin-bottom: 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: padding 0.2s ease-out;
 
   &__btn {
     cursor: pointer;
-    padding: 20px 0;
+    padding: 10px 0;
 
     &-name {
       color: #32594f;
       text-decoration: none;
       text-transform: uppercase;
       font-weight: 400;
-      padding: 20px 20px;
+      padding: 10px 20px 20px;
     }
 
     &--left-radius:hover {
@@ -27,5 +32,9 @@
       background-color: darken($color: #fdd5b0, $amount: 10%);
       transition: background-color 0.3s ease-out;
     }
+  }
+
+  &:hover {
+    padding-top: 20px;
   }
 }
