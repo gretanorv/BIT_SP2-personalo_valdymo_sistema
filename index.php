@@ -20,7 +20,7 @@
         </div>
     </header>
     <main class="main">
-        <span class="add">+</span>
+        <a href="?{$path}&delete={$row['id']}" class="add">+</a>
 
         <?php
 
@@ -51,7 +51,6 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('i', $_GET['delete']);
                 $res = $stmt->execute();
-
                 $stmt->close();
                 mysqli_close($conn);
 
@@ -80,28 +79,36 @@
                 }
 
                 $res = $stmt->execute();
-
                 $stmt->close();
                 mysqli_close($conn);
 
                 header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
                 die();
             }
+
+            //add new logic
         }
 
+        //on initiate
         if ($_GET['path'] == 'darbuotojai') {
             $title = 'DARBUOTOJAI';
+            $path = "path={$_GET['path']}";
             $sql = 'SELECT darbuotojai.id, concat_ws(" ", vardas, pavarde) AS vardas, projekto_pavadinimas FROM darbuotojai
             LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
         } else if ($_GET['path'] == 'projektai') {
             $title = 'PROJEKTAI';
+            $path = "path={$_GET['path']}";
             $sql = 'SELECT projektai.id, projekto_pavadinimas, group_concat(CONCAT_WS(" ", vardas, pavarde) SEPARATOR "; " ) AS vardas FROM projektai
             LEFT JOIN darbuotojai ON projektai.id = darbuotojai.projekto_id
             GROUP BY projektai.id';
+        } else {
+            $path = "";
         }
 
+        print("<a href='?{$path}&add=true' class='add'>+</a>");
         print("<h2 class='main__title'>{$title}</h2>");
 
+        //edit form
         if (isset($_GET['edit'])) {
             if ($_GET['path'] == 'projektai') {
                 $res = mysqli_query($conn, "SELECT projekto_pavadinimas AS projektas FROM projektai WHERE id = " . $_GET['edit']);
@@ -125,11 +132,10 @@
             }
         }
 
-        print_table($conn, $sql);
+        print_table($conn, $sql, $path);
 
-
-        //projektai ir darbuotojai
-        function print_table($conn, $sql)
+        //main tables
+        function print_table($conn, $sql, $path)
         {
             $res = mysqli_query($conn, $sql);
             if (mysqli_num_rows($res) > 0) {
@@ -159,12 +165,6 @@
                                 print("<div class='table__col'>{$row['vardas']}</div>
                                 <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
                                 ");
-
-                            if (isset($_GET['path'])) {
-                                $path = "path={$_GET['path']}";
-                            } else {
-                                $path = "";
-                            }
 
                             print("<div class='table__col-controls'>
                             <a href='?{$path}&edit={$row['id']}' class='table__col-controls-link'>EDIT</a>

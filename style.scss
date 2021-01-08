@@ -20,6 +20,7 @@ body {
   padding: 0 10px;
   border-radius: 50%;
   transition: background-color 0.3s ease;
+  text-decoration: none;
 
   &:hover {
     background-color: lighten($color: #ff747d, $amount: 15%);

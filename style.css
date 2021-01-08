@@ -154,6 +154,7 @@ body {
   border-radius: 50%;
   -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .add:hover {
