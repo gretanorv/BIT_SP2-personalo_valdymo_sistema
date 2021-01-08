@@ -165,17 +165,32 @@
                             }
 
                             print("<div class='table__col-controls'>
-                            <a href='?{$path}&action=edit' class='table__col-controls-link'>EDIT</a>
+                            <a href='?{$path}&edit={$row['id']}' class='table__col-controls-link'>EDIT</a>
                             <a href='?{$path}&action=delete&id={$row['id']}' 
                             class='table__col-controls-link table__col-controls-link--del'>DELETE</a>
                             </div>");
                             ?>
                         </div>
-            <?php
+                    <?php
                     }
                     print('</div>');
                 } else {
                     print('<p>Nėra duomenų</p>');
+                }
+            }
+
+            if (isset($_GET['edit'])) {
+                $res = mysqli_query($conn, "SELECT vardas, pavarde FROM darbuotojai WHERE id = " . $_GET['edit']);
+                if (mysqli_num_rows($res) > 0) {
+                    while ($row = mysqli_fetch_assoc($res)) {
+                    ?>
+                        <form action="" method="post">
+                            <input type="text" name="vardas" value="<?php echo $row['vardas'] ?>">
+                            <input type="text" name="pavarde" value="<?php echo $row['pavarde'] ?>">
+                            <input type="button" value="Save">
+                        </form>
+            <?php
+                    }
                 }
             }
 
