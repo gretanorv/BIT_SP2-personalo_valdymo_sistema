@@ -39,8 +39,7 @@
             LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
 
             //delete magic
-            if (isset($_GET['action']) and $_GET['action'] == 'delete') {
-                print($_GET['path']);
+            if (isset($_GET['delete'])) {
                 if ($_GET['path'] == 'projektai') {
                     //TODO:: if employees left throw error/ warning
                     $sql = "DELETE FROM projektai WHERE ID = ?";
@@ -49,7 +48,7 @@
                 }
 
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param('i', $_GET['id']);
+                $stmt->bind_param('i', $_GET['delete']);
                 $res = $stmt->execute();
 
                 $stmt->close();
@@ -168,7 +167,7 @@
 
                             print("<div class='table__col-controls'>
                             <a href='?{$path}&edit={$row['id']}' class='table__col-controls-link'>EDIT</a>
-                            <a href='?{$path}&action=delete&id={$row['id']}' 
+                            <a href='?{$path}&delete={$row['id']}' 
                             class='table__col-controls-link table__col-controls-link--del'>DELETE</a>
                             </div>");
                             ?>
