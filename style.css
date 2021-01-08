@@ -141,4 +141,23 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.add {
+  position: absolute;
+  top: 45px;
+  right: 45px;
+  font-size: 2rem;
+  color: #ff747d;
+  cursor: pointer;
+  background-color: #fdd5b0;
+  padding: 0 10px;
+  border-radius: 50%;
+  -webkit-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.add:hover {
+  background-color: #ffc1c5;
+}
 /*# sourceMappingURL=style.css.map */

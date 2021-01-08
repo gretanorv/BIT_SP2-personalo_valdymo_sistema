@@ -8,3 +8,21 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.add {
+  position: absolute;
+  top: 45px;
+  right: 45px;
+  font-size: 2rem;
+  color: #ff747d;
+  cursor: pointer;
+  background-color: #fdd5b0;
+  padding: 0 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+
+  &:hover {
+    background-color: lighten($color: #ff747d, $amount: 15%);
+  }
+}
