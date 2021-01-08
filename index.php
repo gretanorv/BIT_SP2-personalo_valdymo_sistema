@@ -68,13 +68,16 @@
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('si', $_POST['projektas'], $_GET['edit']);
                 } else {
+                    $id = get_project_id($conn, $_POST['projects']);
+                    echo $id;
                     $sql = "UPDATE darbuotojai SET
                     vardas = ?,
-                    pavarde = ?
+                    pavarde = ?,
+                    projekto_id = ?
                     WHERE id = ?";
 
                     $stmt = $conn->prepare($sql);
-                    $stmt->bind_param('ssi', $_POST['vardas'], $_POST['pavarde'], $_GET['edit']);
+                    $stmt->bind_param('ssii', $_POST['vardas'], $_POST['pavarde'], $id, $_GET['edit']);
                 }
 
                 $res = $stmt->execute();
@@ -149,85 +152,96 @@
                     <?php }
                     }
                 }
-                if (mysqli_num_rows($project_res) > 0) { ?>
+                if ($project_res and mysqli_num_rows($project_res) > 0) { ?>
                     <select name="projects" id="projects">
                         <?php
                         while ($row = mysqli_fetch_assoc($project_res)) {
                         ?>
-                            <option value="volvo"><?php echo $row['projektas'] ?></option>
+                            <option><?php echo $row['projektas'] ?></option>
                         <?php } ?>
                     </select>
-                    <input type="submit" value="Save" name="update">
+
+                <?php } ?>
+                <input type="submit" value="Save" name="update">
                     </form>
-                <?php
-                }
-            }
+                <?php }
 
             //insert form
             if (isset($_GET['insert']) and $_GET['insert']) { ?>
-                <form action="" method="post">
-                    <?php if ($_GET['path'] == 'projektai') { ?>
-                        <input type="text" name="projektas" placeholder="Projekto pavadinimas">
-                    <?php } else { ?>
-                        <input type="text" name="vardas" placeholder="Vardas">
-                        <input type="text" name="pavarde" placeholder="Pavarde">
-                    <?php } ?>
-                    <input type="submit" value="Insert" name="insert">
-                </form>
-                <?php
-            }
+                    <form action="" method="post">
+                        <?php if ($_GET['path'] == 'projektai') { ?>
+                            <input type="text" name="projektas" placeholder="Projekto pavadinimas">
+                        <?php } else { ?>
+                            <input type="text" name="vardas" placeholder="Vardas">
+                            <input type="text" name="pavarde" placeholder="Pavarde">
+                        <?php } ?>
+                        <input type="submit" value="Insert" name="insert">
+                    </form>
+                    <?php
+                }
 
 
-            print_table($conn, $sql, $path);
+                print_table($conn, $sql, $path);
 
-            //main tables
-            function print_table($conn, $sql, $path)
-            {
-                $res = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($res) > 0) {
-                ?>
-                    <div class="table">
-                        <div class="table__row table__row--head">
-                            <div class="table__col-id table__col--head">ID</div>
-                            <?php $_GET['path'] == 'projektai' ?
-                                print("<div class='table__col table__col--head'>PROJEKTAS</div>
+                //main tables
+                function print_table($conn, $sql, $path)
+                {
+                    $res = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($res) > 0) {
+                    ?>
+                        <div class="table">
+                            <div class="table__row table__row--head">
+                                <div class="table__col-id table__col--head">ID</div>
+                                <?php $_GET['path'] == 'projektai' ?
+                                    print("<div class='table__col table__col--head'>PROJEKTAS</div>
                             <div class='table__col-text table__col--head'>DARBUOTOJAI</div>
                             ")
-                                :
-                                print("<div class='table__col table__col--head'>DARBUOTOJAS</div>
+                                    :
+                                    print("<div class='table__col table__col--head'>DARBUOTOJAS</div>
                             <div class='table__col-text table__col--head'>PROJEKTAS</div>
                             ")
-                            ?>
-                            <div class="table__col-controls table__col--head">VEIKSMAI</div>
-                        </div>
-                        <?php while ($row = mysqli_fetch_assoc($res)) { ?>
-                            <div class='table__row'>
-                                <div class='table__col-id'><?php echo $row['id'] ?></div>
-                                <?php $_GET['path'] == 'projektai' ?
-                                    print("<div class='table__col'>{$row['projekto_pavadinimas']}</div>
+                                ?>
+                                <div class="table__col-controls table__col--head">VEIKSMAI</div>
+                            </div>
+                            <?php while ($row = mysqli_fetch_assoc($res)) { ?>
+                                <div class='table__row'>
+                                    <div class='table__col-id'><?php echo $row['id'] ?></div>
+                                    <?php $_GET['path'] == 'projektai' ?
+                                        print("<div class='table__col'>{$row['projekto_pavadinimas']}</div>
                                 <div class='table__col-text'>{$row['vardas']}</div>
                                 ")
-                                    :
-                                    print("<div class='table__col'>{$row['vardas']}</div>
+                                        :
+                                        print("<div class='table__col'>{$row['vardas']}</div>
                                 <div class='table__col-text'>{$row['projekto_pavadinimas']}</div>
                                 ");
 
-                                print("<div class='table__col-controls'>
+                                    print("<div class='table__col-controls'>
                             <a href='?{$path}&edit={$row['id']}' class='table__col-controls-link'>EDIT</a>
                             <a href='?{$path}&delete={$row['id']}' 
                             class='table__col-controls-link table__col-controls-link--del'>DELETE</a>
                             </div>");
-                                ?>
-                            </div>
-                <?php
+                                    ?>
+                                </div>
+                    <?php
+                            }
+                            print('</div>');
+                        } else {
+                            print('<p>Nėra duomenų</p>');
                         }
-                        print('</div>');
-                    } else {
-                        print('<p>Nėra duomenų</p>');
                     }
-                }
 
-                ?>
+                    function get_project_id($conn, $project)
+                    {
+                        $res = mysqli_query($conn, "SELECT id FROM projektai WHERE projekto_pavadinimas = " . $project);
+                        if (mysqli_num_rows($res) > 0) {
+                            while ($row = mysqli_fetch_assoc($res)) {
+                                $id = $row['id'];
+                            }
+                            return $id;
+                        }
+                    }
+
+                    ?>
 
     </main>
     <footer class="footer">
