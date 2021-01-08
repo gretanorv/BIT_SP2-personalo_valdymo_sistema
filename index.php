@@ -101,6 +101,30 @@
         }
 
         print("<h2 class='main__title'>{$title}</h2>");
+
+        if (isset($_GET['edit'])) {
+            if ($_GET['path'] == 'projektai') {
+                $res = mysqli_query($conn, "SELECT projekto_pavadinimas AS projektas FROM projektai WHERE id = " . $_GET['edit']);
+            } else {
+                $res = mysqli_query($conn, "SELECT vardas, pavarde FROM darbuotojai WHERE id = " . $_GET['edit']);
+            }
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_assoc($res)) {
+        ?>
+                    <form action="" method="post">
+                        <?php if ($_GET['path'] == 'projektai') { ?>
+                            <input type="text" name="projektas" value="<?php echo $row['projektas'] ?>">
+                        <?php } else { ?>
+                            <input type="text" name="vardas" value="<?php echo $row['vardas'] ?>">
+                            <input type="text" name="pavarde" value="<?php echo $row['pavarde'] ?>">
+                        <?php } ?>
+                        <input type="submit" value="Save" name="update">
+                    </form>
+                <?php
+                }
+            }
+        }
+
         print_table($conn, $sql);
 
 
@@ -109,7 +133,7 @@
         {
             $res = mysqli_query($conn, $sql);
             if (mysqli_num_rows($res) > 0) {
-        ?>
+                ?>
                 <div class="table">
                     <div class="table__row table__row--head">
                         <div class="table__col-id table__col--head">ID</div>
@@ -149,34 +173,11 @@
                             </div>");
                             ?>
                         </div>
-                    <?php
+            <?php
                     }
                     print('</div>');
                 } else {
                     print('<p>Nėra duomenų</p>');
-                }
-            }
-
-            if (isset($_GET['edit'])) {
-                if ($_GET['path'] == 'projektai') {
-                    $res = mysqli_query($conn, "SELECT projekto_pavadinimas AS projektas FROM projektai WHERE id = " . $_GET['edit']);
-                } else {
-                    $res = mysqli_query($conn, "SELECT vardas, pavarde FROM darbuotojai WHERE id = " . $_GET['edit']);
-                }
-                if (mysqli_num_rows($res) > 0) {
-                    while ($row = mysqli_fetch_assoc($res)) {
-                    ?>
-                        <form action="" method="post">
-                            <?php if ($_GET['path'] == 'projektai') { ?>
-                                <input type="text" name="projektas" value="<?php echo $row['projektas'] ?>">
-                            <?php } else { ?>
-                                <input type="text" name="vardas" value="<?php echo $row['vardas'] ?>">
-                                <input type="text" name="pavarde" value="<?php echo $row['pavarde'] ?>">
-                            <?php } ?>
-                            <input type="submit" value="Save" name="update">
-                        </form>
-            <?php
-                    }
                 }
             }
 
