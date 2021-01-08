@@ -20,7 +20,6 @@
         </div>
     </header>
     <main class="main">
-        <a href="?{$path}&delete={$row['id']}" class="add">+</a>
 
         <?php
 
@@ -86,7 +85,29 @@
                 die();
             }
 
-            //add new logic
+            //insert logic
+            if (isset($_POST['insert'])) {
+                print("inserted");
+
+                if ($_GET['path'] == 'projektai') {
+                    $insert_sql = "INSERT INTO projektai VALUES (?, ?)";
+                    $stmt = $conn->prepare($insert_sql);
+                    $stmt->bind_param('is', $id, $_POST['projektas']);
+                    $nd = null;
+                } else {
+                    $insert_sql = "INSERT INTO darbuotojai VALUES (?, ?, ?, ?)";
+                    $stmt = $conn->prepare($insert_sql);
+                    $stmt->bind_param('isss', $id, $_POST['vardas'], $_POST['pavarde'], $project);
+                    $id = null;
+                    $project = null;
+                }
+                $res = $stmt->execute();
+                $stmt->close();
+                mysqli_close($conn);
+
+                header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
+                die();
+            }
         }
 
         //on initiate
@@ -105,10 +126,10 @@
             $path = "";
         }
 
-        print("<a href='?{$path}&add=true' class='add'>+</a>");
+        print("<a href='?{$path}&insert=true' class='add'>+</a>");
         print("<h2 class='main__title'>{$title}</h2>");
 
-        //edit form
+        //update form
         if (isset($_GET['edit'])) {
             if ($_GET['path'] == 'projektai') {
                 $res = mysqli_query($conn, "SELECT projekto_pavadinimas AS projektas FROM projektai WHERE id = " . $_GET['edit']);
@@ -127,10 +148,25 @@
                         <?php } ?>
                         <input type="submit" value="Save" name="update">
                     </form>
-                <?php
+            <?php
                 }
             }
         }
+
+        //insert form
+        if (isset($_GET['insert']) and $_GET['insert']) { ?>
+            <form action="" method="post">
+                <?php if ($_GET['path'] == 'projektai') { ?>
+                    <input type="text" name="projektas" placeholder="Projekto pavadinimas">
+                <?php } else { ?>
+                    <input type="text" name="vardas" placeholder="Vardas">
+                    <input type="text" name="pavarde" placeholder="Pavarde">
+                <?php } ?>
+                <input type="submit" value="Insert" name="insert">
+            </form>
+            <?php
+        }
+
 
         print_table($conn, $sql, $path);
 
@@ -139,7 +175,7 @@
         {
             $res = mysqli_query($conn, $sql);
             if (mysqli_num_rows($res) > 0) {
-                ?>
+            ?>
                 <div class="table">
                     <div class="table__row table__row--head">
                         <div class="table__col-id table__col--head">ID</div>
