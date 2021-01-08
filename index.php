@@ -20,6 +20,7 @@
         </div>
     </header>
     <main class="main">
+        <span class="add">+</span>
 
         <?php
 
