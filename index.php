@@ -71,6 +71,35 @@
                 header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
                 die();
             }
+
+            //update magic
+            if (isset($_POST['update'])) {
+                print("update");
+                if ($_GET['path'] == 'projektai') {
+                    $sql = "UPDATE projektai SET
+                    projekto_pavadinimas = ?
+                    WHERE id = ?";
+
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('si', $_POST['projektas'], $_GET['edit']);
+                } else {
+                    $sql = "UPDATE darbuotojai SET
+                    vardas = ?,
+                    pavarde = ?
+                    WHERE id = ?";
+
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('ssi', $_POST['vardas'], $_POST['pavarde'], $_GET['edit']);
+                }
+
+                $res = $stmt->execute();
+
+                $stmt->close();
+                mysqli_close($conn);
+
+                header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
+                die();
+            }
         }
 
         if ($_GET['path'] == 'darbuotojai') {
@@ -165,17 +194,40 @@
                             }
 
                             print("<div class='table__col-controls'>
-                            <a href='?{$path}&action=edit' class='table__col-controls-link'>EDIT</a>
+                            <a href='?{$path}&edit={$row['id']}' class='table__col-controls-link'>EDIT</a>
                             <a href='?{$path}&action=delete&id={$row['id']}' 
                             class='table__col-controls-link table__col-controls-link--del'>DELETE</a>
                             </div>");
                             ?>
                         </div>
-            <?php
+                    <?php
                     }
                     print('</div>');
                 } else {
                     print('<p>Nėra duomenų</p>');
+                }
+            }
+
+            if (isset($_GET['edit'])) {
+                if ($_GET['path'] == 'projektai') {
+                    $res = mysqli_query($conn, "SELECT projekto_pavadinimas AS projektas FROM projektai WHERE id = " . $_GET['edit']);
+                } else {
+                    $res = mysqli_query($conn, "SELECT vardas, pavarde FROM darbuotojai WHERE id = " . $_GET['edit']);
+                }
+                if (mysqli_num_rows($res) > 0) {
+                    while ($row = mysqli_fetch_assoc($res)) {
+                    ?>
+                        <form action="" method="post">
+                            <?php if ($_GET['path'] == 'projektai') { ?>
+                                <input type="text" name="projektas" value="<?php echo $row['projektas'] ?>">
+                            <?php } else { ?>
+                                <input type="text" name="vardas" value="<?php echo $row['vardas'] ?>">
+                                <input type="text" name="pavarde" value="<?php echo $row['pavarde'] ?>">
+                            <?php } ?>
+                            <input type="submit" value="Save" name="update">
+                        </form>
+            <?php
+                    }
                 }
             }
 

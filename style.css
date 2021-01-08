@@ -12,11 +12,17 @@
   display: flex;
   background-color: #fdd5b0;
   margin-bottom: 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  -webkit-transition: padding 0.2s ease-out;
+  transition: padding 0.2s ease-out;
 }
 
 .header__btn {
   cursor: pointer;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 .header__btn-name {
@@ -24,7 +30,7 @@
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 400;
-  padding: 20px 20px;
+  padding: 10px 20px 20px;
 }
 
 .header__btn--left-radius:hover {
@@ -35,6 +41,10 @@
   background-color: #fcbb7e;
   -webkit-transition: background-color 0.3s ease-out;
   transition: background-color 0.3s ease-out;
+}
+
+.header:hover {
+  padding-top: 20px;
 }
 
 .footer {
@@ -54,7 +64,7 @@
 }
 
 .main {
-  margin: 0 50px;
+  margin: 70px 50px 0;
 }
 
 .table {
@@ -94,11 +104,11 @@
 
 .table__col-text {
   margin-right: 20px;
-  width: 60%;
+  width: 55%;
 }
 
 .table__col-controls {
-  width: 15%;
+  width: 20%;
 }
 
 .table__col-controls-link {
