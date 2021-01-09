@@ -42,7 +42,7 @@
         //delete magic
         if (isset($_GET['delete'])) {
             if ($_GET['path'] == 'projektai') {
-                //TODO:: if employees left throw error/ warning
+                //TODO:: if project has employees asigned should I still delete it or throw error?
                 $sql = "DELETE FROM projektai WHERE ID = ?";
             } else {
                 $sql = "DELETE FROM darbuotojai WHERE ID = ?";
