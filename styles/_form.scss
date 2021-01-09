@@ -1,0 +1,27 @@
+.form {
+  margin-bottom: 10px;
+
+  &__input {
+    border: 1px solid darken($color: #fdd5b0, $amount: 15%);
+    border-radius: 3px;
+    color: #32594f;
+    padding: 2px 0 2px 5px;
+    font-weight: 300;
+  }
+
+  &__btn {
+    border: 1px solid darken($color: #fdd5b0, $amount: 15%);
+    border-radius: 3px;
+    color: darken($color: #fdd5b0, $amount: 15%);
+    padding: 2px 8px;
+    text-transform: uppercase;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in, color 0.3s ease-in;
+
+    &:hover {
+      background-color: darken($color: #fdd5b0, $amount: 15%);
+      color: #fff;
+    }
+  }
+}
