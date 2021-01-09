@@ -37,35 +37,41 @@
             $title = 'DARBUOTOJAI';
             $sql = 'SELECT darbuotojai.id, concat_ws(" ", vardas, pavarde) AS vardas, projekto_pavadinimas FROM darbuotojai
             LEFT JOIN projektai ON projektai.id = darbuotojai.projekto_id';
+        }
 
-            //delete magic
-            if (isset($_GET['delete'])) {
-                if ($_GET['path'] == 'projektai') {
-                    //TODO:: if employees left throw error/ warning
-                    $sql = "DELETE FROM projektai WHERE ID = ?";
-                } else {
-                    $sql = "DELETE FROM darbuotojai WHERE ID = ?";
-                }
-
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param('i', $_GET['delete']);
-                $res = $stmt->execute();
-                $stmt->close();
-                mysqli_close($conn);
-
-                header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
-                die();
+        //delete magic
+        if (isset($_GET['delete'])) {
+            if ($_GET['path'] == 'projektai') {
+                //TODO:: if employees left throw error/ warning
+                $sql = "DELETE FROM projektai WHERE ID = ?";
+            } else {
+                $sql = "DELETE FROM darbuotojai WHERE ID = ?";
             }
 
-            //update magic
-            if (isset($_POST['update'])) {
-                if ($_GET['path'] == 'projektai') {
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $_GET['delete']);
+
+            run_sql($conn, $stmt);
+        }
+
+        //update magic
+        if (isset($_POST['update'])) {
+            if ($_GET['path'] == 'projektai') {
+                if ($_POST['projektas'] == "") {
+                    print("Įveskite projekto pavadinimą");
+                } else {
                     $sql = "UPDATE projektai SET
-                    projekto_pavadinimas = ?
-                    WHERE id = ?";
+                        projekto_pavadinimas = ?
+                        WHERE id = ?";
 
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('si', $_POST['projektas'], $_GET['edit']);
+
+                    run_sql($conn, $stmt);
+                }
+            } else {
+                if ($_POST['vardas'] == "" || $_POST['pavarde'] == "") {
+                    print("Užpildykite visus laukus");
                 } else {
                     $sql = "UPDATE darbuotojai SET
                     vardas = ?,
@@ -76,36 +82,39 @@
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('ssii', $_POST['vardas'], $_POST['pavarde'], $id, $_GET['edit']);
                     $id = get_project_id($conn, $_POST['projects']);
+
+                    run_sql($conn, $stmt);
                 }
-
-                $res = $stmt->execute();
-                $stmt->close();
-                mysqli_close($conn);
-
-                header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
-                die();
             }
+        }
 
-            //insert logic
-            if (isset($_POST['insert'])) {
-                if ($_GET['path'] == 'projektai') {
+
+
+        //insert logic
+        if (isset($_POST['insert'])) {
+            if ($_GET['path'] == 'projektai') {
+                if ($_POST['projektas'] == "") {
+                    print("Įveskite projekto pavadinimą");
+                } else {
                     $insert_sql = "INSERT INTO projektai VALUES (?, ?)";
                     $stmt = $conn->prepare($insert_sql);
                     $stmt->bind_param('is', $id, $_POST['projektas']);
                     $nd = null;
+
+                    run_sql($conn, $stmt);
+                }
+            } else {
+                if ($_POST['vardas'] == "" || $_POST['pavarde'] == "") {
+                    print("Užpildykite visus laukus");
                 } else {
                     $insert_sql = "INSERT INTO darbuotojai VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($insert_sql);
                     $stmt->bind_param('isss', $id, $_POST['vardas'], $_POST['pavarde'], $project);
                     $id = null;
                     $project = null;
-                }
-                $res = $stmt->execute();
-                $stmt->close();
-                mysqli_close($conn);
 
-                header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
-                die();
+                    run_sql($conn, $stmt);
+                }
             }
         }
 
@@ -235,6 +244,15 @@
                             }
                             return $id;
                         }
+                    }
+
+                    function run_sql($conn, $stmt)
+                    {
+                        $stmt->execute();
+                        $stmt->close();
+                        mysqli_close($conn);
+                        header("Location: " . strtok($_SERVER['REQUEST_URI'], '&'));
+                        die();
                     }
 
                     ?>
