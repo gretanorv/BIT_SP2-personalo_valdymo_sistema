@@ -139,17 +139,17 @@
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_assoc($res)) {
         ?>
-                    <form action="" method="post">
+                    <form action="" method="post" class="form">
                         <?php if ($_GET['path'] == 'projektai') { ?>
-                            <input type="text" name="projektas" value="<?php echo $row['projektas'] ?>">
+                            <input class="form__input" type="text" name="projektas" value="<?php echo $row['projektas'] ?>">
                         <?php } else { ?>
-                            <input type="text" name="vardas" value="<?php echo $row['vardas'] ?>">
-                            <input type="text" name="pavarde" value="<?php echo $row['pavarde'] ?>">
+                            <input class="form__input" type="text" name="vardas" value="<?php echo $row['vardas'] ?>">
+                            <input class="form__input" type="text" name="pavarde" value="<?php echo $row['pavarde'] ?>">
                     <?php }
                     }
                 }
                 if ($project_res and mysqli_num_rows($project_res) > 0) { ?>
-                    <select name="projects" id="projects">
+                    <select class="form__input" name="projects" id="projects">
                         <?php
                         while ($row = mysqli_fetch_assoc($project_res)) {
                         ?>
@@ -158,20 +158,20 @@
                     </select>
 
                 <?php } ?>
-                <input type="submit" value="Save" name="update">
+                <input class="form__btn" type="submit" value="Save" name="update">
                     </form>
                 <?php }
 
             //insert form
             if (isset($_GET['insert']) and $_GET['insert']) { ?>
-                    <form action="" method="post">
+                    <form action="" method="post" class="form">
                         <?php if ($_GET['path'] == 'projektai') { ?>
-                            <input type="text" name="projektas" placeholder="Projekto pavadinimas">
+                            <input class="form__input" type="text" name="projektas" placeholder="Projekto pavadinimas">
                         <?php } else { ?>
-                            <input type="text" name="vardas" placeholder="Vardas">
-                            <input type="text" name="pavarde" placeholder="Pavarde">
+                            <input class="form__input" type="text" name="vardas" placeholder="Vardas">
+                            <input class="form__input" type="text" name="pavarde" placeholder="Pavarde">
                         <?php } ?>
-                        <input type="submit" value="Insert" name="insert">
+                        <input class="form__btn" type="submit" value="Insert" name="insert">
                     </form>
                     <?php
                 }
