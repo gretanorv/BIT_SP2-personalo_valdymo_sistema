@@ -59,7 +59,6 @@
 
             //update magic
             if (isset($_POST['update'])) {
-                print("update");
                 if ($_GET['path'] == 'projektai') {
                     $sql = "UPDATE projektai SET
                     projekto_pavadinimas = ?
@@ -89,8 +88,6 @@
 
             //insert logic
             if (isset($_POST['insert'])) {
-                print("inserted");
-
                 if ($_GET['path'] == 'projektai') {
                     $insert_sql = "INSERT INTO projektai VALUES (?, ?)";
                     $stmt = $conn->prepare($insert_sql);
@@ -231,7 +228,7 @@
 
                     function get_project_id($conn, $project)
                     {
-                        $res = mysqli_query($conn, "SELECT id FROM projektai WHERE projekto_pavadinimas = " . $project);
+                        $res = mysqli_query($conn, "SELECT id FROM projektai WHERE projekto_pavadinimas = '{$project}'");
                         if (mysqli_num_rows($res) > 0) {
                             while ($row = mysqli_fetch_assoc($res)) {
                                 $id = $row['id'];
